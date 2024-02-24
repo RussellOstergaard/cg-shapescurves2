@@ -52,11 +52,15 @@ class Renderer {
         // TODO: draw at least 2 Bezier curves
         //   - variable `this.num_curve_sections` should be used for `num_edges`
         //   - variable `this.show_points` should be used to determine whether or not to render vertices
-        
-        
+
+        // Draws first bezier curve
+        this.drawBezierCurve({x: 50, y: 300}, {x: 50, y: 500}, {x: 350, y:500}, {x:350,y:300}, (this.num_curve_sections-2)/2, [255, 0, 0, 255], framebuffer);
+        // Draws Second Bezier curve
+        this.drawBezierCurve({x: 350, y: 300}, {x:350, y:100}, {x:650, y:100}, {x:650,y:300}, (this.num_curve_sections-2)/2, [255, 0, 0, 255], framebuffer);
+
         // Following line is example of drawing a single line
         // (this should be removed after you implement the curve)
-        this.drawLine({x: 100, y: 100}, {x: 600, y: 300}, [255, 0, 0, 255], framebuffer);
+        // this.drawLine({x: 100, y: 300}, {x: 600, y: 300}, [255, 0, 0, 255], framebuffer);
     }
 
     // framebuffer:  canvas ctx image data
@@ -64,7 +68,9 @@ class Renderer {
         // TODO: draw at least 2 circles
         //   - variable `this.num_curve_sections` should be used for `num_edges`
         //   - variable `this.show_points` should be used to determine whether or not to render vertices
-        
+        this.drawCircle({x:100, y:300}, 50, this.num_curve_sections, [255, 0, 0, 255], framebuffer);
+
+        this.drawCircle({x:500, y:300}, 100, this.num_curve_sections, [255, 0, 0, 255], framebuffer);
         
     }
 
@@ -101,6 +107,26 @@ class Renderer {
     drawBezierCurve(p0, p1, p2, p3, num_edges, color, framebuffer) {
         // TODO: draw a sequence of straight lines to approximate a Bezier curve
         
+        let t = 1.0/num_edges;
+        console.log("t-value");
+        console.log(t);
+        let p4 = p0;
+        for(let i = t; i <= 1; i+=t){
+            console.log("i-value");
+            console.log(i);
+            let i2 = 1-i;
+            console.log("i2-value");
+            console.log(i2);
+            let x = ((Math.pow(i2, 3)) * p0.x) + (3 * (Math.pow(i2, 2)) * t * p1.x) + (3 * i2 * (Math.pow(i,2)) * p2.x) + ((Math.pow(i,3)) * p3.x);
+            //console.log("x-value");
+            //console.log(x);
+            let y = ((Math.pow(i2, 3)) * p0.y) + (3 * (Math.pow(i2, 2)) * t * p1.y) + (3 * i2 * (Math.pow(i,2)) * p2.y) + ((Math.pow(i,3)) * p3.y);
+            //console.log("y-value");
+            let p5 = {x:Math.round(x), y:Math.round(y)};
+            //console.log(y);
+            this.drawLine(p4, p5, color, framebuffer);
+            p4 = p5;
+        }
         
     }
 
@@ -111,7 +137,21 @@ class Renderer {
     // framebuffer:  canvas ctx image data
     drawCircle(center, radius, num_edges, color, framebuffer) {
         // TODO: draw a sequence of straight lines to approximate a circle
-        
+        let sections = 360/num_edges;
+        let point = 0;
+        let p0 = null;
+        for(let i = 0; i <= num_edges; i++){
+            let x = center.x + (radius * Math.cos((point * Math.PI)/180));
+            let y = center.y + (radius * Math.sin((point * Math.PI)/180));
+            point+=sections;
+            if(p0 == null){
+                p0 = {x: Math.round(x), y: Math.round(y)};
+            }
+            else{
+                this.drawLine(p0, {x: Math.round(x), y: Math.round(y)}, color, framebuffer);
+                p0 = {x: Math.round(x), y: Math.round(y)};
+            }
+        }
         
     }
     
