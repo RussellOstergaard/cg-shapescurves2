@@ -78,14 +78,55 @@ class Renderer {
     drawSlide2(framebuffer) {
         // TODO: draw at least 2 convex polygons (each with a different number of vertices >= 5)
         //   - variable `this.show_points` should be used to determine whether or not to render vertices
-        
+
+        //Polygon 1 
+        let point_1 = {x: 80, y: 100};
+        let point_2 = {x: 100, y: 130};
+        let point_3 = {x: 139, y: 200};
+        let point_4 = {x: 155, y: 143};
+        let point_5 = {x: 176, y: 130};
+        this.drawTriangle(point_1, point_2, point_3, [0, 128, 128, 255], framebuffer);
+        this.drawTriangle(point_1, point_3, point_4, [0, 128, 128, 255], framebuffer);
+        this.drawTriangle(point_1, point_4, point_5, [0, 128, 128, 255], framebuffer);
+
+        if(this.show_points == true){
+            this.drawVertex(point_1, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_2, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_3, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_4, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_5, [255, 165, 0, 255], framebuffer);
+        }
+
+        // Polygon 2
+        point_1 = {x: 480, y: 200};
+        point_2 = {x: 400, y: 160};
+        point_3 = {x: 439, y: 340};
+        point_4 = {x: 465, y: 375};
+        point_5 = {x: 536, y: 540};
+        let point_6 = {x: 560, y: 340};
+        let point_7 = {x: 600, y: 160};
+        this.drawTriangle(point_1, point_2, point_3, [0, 128, 128, 255], framebuffer);
+        this.drawTriangle(point_1, point_3, point_4, [0, 128, 128, 255], framebuffer);
+        this.drawTriangle(point_1, point_4, point_5, [0, 128, 128, 255], framebuffer);
+        this.drawTriangle(point_1, point_5, point_6, [0, 128, 128, 255], framebuffer);
+        this.drawTriangle(point_1, point_6, point_7, [0, 128, 128, 255], framebuffer);
+
+        if(this.show_points == true){
+            this.drawVertex(point_1, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_2, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_3, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_4, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_5, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_6, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_7, [255, 165, 0, 255], framebuffer);
+        }
         
         // Following lines are example of drawing a single triangle
         // (this should be removed after you implement the polygon)
-        let point_a = {x:  80, y:  40};
-        let point_b = {x: 320, y: 160};
-        let point_c = {x: 240, y: 360};
-        this.drawTriangle(point_a, point_c, point_b, [0, 128, 128, 255], framebuffer);
+        //let point_a = {x:  80, y:  40};
+        //let point_b = {x: 320, y: 160};
+        //let point_c = {x: 240, y: 360};
+        //this.drawTriangle(point_a, point_c, point_b, [0, 128, 128, 255], framebuffer);
     }
 
     // framebuffer:  canvas ctx image data
@@ -111,13 +152,16 @@ class Renderer {
         console.log("t-value");
         console.log(t);
         let p4 = p0;
+        if(this.show_points == true){
+            this.drawVertex(p0, [255, 165, 0, 255], framebuffer);
+        }
         for(let i = t; i <= 1; i+=t){
-            console.log("i-value");
-            console.log(i);
             let i2 = 1-i;
-            console.log("i2-value");
-            console.log(i2);
-            let x = ((Math.pow(i2, 3)) * p0.x) + (3 * (Math.pow(i2, 2)) * t * p1.x) + (3 * i2 * (Math.pow(i,2)) * p2.x) + ((Math.pow(i,3)) * p3.x);
+            let pow3 = (Math.pow(i2, 3))
+            let pow2 = (Math.pow(i2, 2))
+            let ipow2 = (Math.pow(i,2))
+            let ipow3 = (Math.pow(i,3))
+            let x = pow3 * p0.x + (3 * pow2 * t * p1.x) + (3 * i2 * ipow2 * p2.x) + (ipow3 * p3.x);
             //console.log("x-value");
             //console.log(x);
             let y = ((Math.pow(i2, 3)) * p0.y) + (3 * (Math.pow(i2, 2)) * t * p1.y) + (3 * i2 * (Math.pow(i,2)) * p2.y) + ((Math.pow(i,3)) * p3.y);
@@ -125,6 +169,9 @@ class Renderer {
             let p5 = {x:Math.round(x), y:Math.round(y)};
             //console.log(y);
             this.drawLine(p4, p5, color, framebuffer);
+            if(this.show_points == true){
+                this.drawVertex(p5, [255, 165, 0, 255], framebuffer);
+            }
             p4 = p5;
         }
         
@@ -146,10 +193,16 @@ class Renderer {
             point+=sections;
             if(p0 == null){
                 p0 = {x: Math.round(x), y: Math.round(y)};
+                if(this.show_points == true){
+                    this.drawVertex(p0, [255, 165, 0, 255], framebuffer);
+                }
             }
             else{
                 this.drawLine(p0, {x: Math.round(x), y: Math.round(y)}, color, framebuffer);
                 p0 = {x: Math.round(x), y: Math.round(y)};
+                if(this.show_points == true){
+                    this.drawVertex(p0, [255, 165, 0, 255], framebuffer);
+                }
             }
         }
         
@@ -169,8 +222,10 @@ class Renderer {
     // framebuffer:  canvas ctx image data
     drawVertex(v, color, framebuffer) {
         // TODO: draw some symbol (e.g. small rectangle, two lines forming an X, ...) centered at position `v`
-        
-        
+        let x1 = v.x + 10;
+        let x2 = v.x - 10;
+        let y3 = v.y + 10;
+        this.drawTriangle({x:x1, y:v.y}, {x:x2, y:v.y}, {x:v.x , y:y3 }, color, framebuffer)
     }
     
     /***************************************************************
