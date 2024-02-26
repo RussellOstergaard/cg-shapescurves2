@@ -135,6 +135,66 @@ class Renderer {
         //   - variable `this.num_curve_sections` should be used for `num_edges`
         //   - variable `this.show_points` should be used to determine whether or not to render vertices
         
+        let color = [0, 128, 128, 255];
+        // top polygon for R
+        let point_1 = {x: 100, y:200};
+        let point_2 = {x: 100, y:300};
+        let point_3 = {x: 150, y:270};
+        let point_4 = {x: 200, y:240};
+        let point_5 = {x: 200, y:200};
+        this.drawTriangle(point_1, point_2, point_3, color, framebuffer);
+        this.drawTriangle(point_1, point_3, point_4, color, framebuffer);
+        this.drawTriangle(point_1, point_4, point_5, color, framebuffer);
+
+        // lines for the R
+        let p1 = {x:100, y:50};
+        let p2 = {x:200, y:50};
+        this.drawLine(point_1, p1, color, framebuffer);
+        this.drawLine(point_1, p2, color, framebuffer);
+
+        // draws a belzier curve for the u
+        let up1 = {x:225, y:150}; 
+        let up2 = {x:225, y:50};
+        let up3 = {x:275, y:50};
+        let up4 = {x:275, y:150};
+        this.drawBezierCurve(up1, up2, up3, up4, this.num_curve_sections, color, framebuffer);
+
+        // draws s's
+        for(let i = 0; i <= 75; i+= 75){
+            let sp1 = {x:350 + i, y:150};
+            let sp2 = {x:300 + i, y:150};
+            let sp3 = {x:300 + i, y:100};
+            let sp4 = {x:350 + i, y:100};
+            let sp5 = {x:350 + i, y:50};
+            let sp6 = {x:300 + i, y:50};
+            this.drawLine(sp1, sp2, color,framebuffer);
+            this.drawLine(sp2, sp3, color,framebuffer);
+            this.drawLine(sp3, sp4, color,framebuffer);
+            this.drawLine(sp4, sp5, color,framebuffer);
+            this.drawLine(sp5, sp6, color,framebuffer);
+            if(this.show_points == true){
+                this.drawVertex(sp1, [255, 165, 0, 255], framebuffer)
+                this.drawVertex(sp2, [255, 165, 0, 255], framebuffer)
+                this.drawVertex(sp3, [255, 165, 0, 255], framebuffer)
+                this.drawVertex(sp4, [255, 165, 0, 255], framebuffer)
+                this.drawVertex(sp5, [255, 165, 0, 255], framebuffer)
+                this.drawVertex(sp6, [255, 165, 0, 255], framebuffer)
+            }
+        }
+        
+        // draws the o
+        this.drawCircle({x:625, y: 150}, 150, this.num_curve_sections, color, framebuffer);
+
+        if(this.show_points == true){
+            this.drawVertex(point_1, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_2, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_3, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_4, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(point_5, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(p1, [255, 165, 0, 255], framebuffer);
+            this.drawVertex(p2, [255, 165, 0, 255], framebuffer);
+        }
+        
         
     }
 
